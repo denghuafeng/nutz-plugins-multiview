@@ -6,6 +6,7 @@
 
 使用步骤：
  1.引用nutz-plugins-multiview.jar插件
+
  2.配置MainModule的视图为ResourceBundleViewResolver 
 
 ```Java
@@ -69,13 +70,12 @@ var ioc = {
 	}
 };
 ```
+当然要创建对应配置的目录
 
-创建对应目录
-
-    4.在module的方法里返回相应的视图，当然要创建相应的视图文件，如下：
+4.在module的方法里返回相应的视图，当然要创建相应的视图文件，如下：
 
 ```Java
- import org.nutz.ioc.loader.annotation.IocBean;
+import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
 
