@@ -2,9 +2,11 @@
 
 ### nutz-plugins-multiview 多视图插件
 
-针对https://github.com/nutzam/nutz/issues/603#issuecomment-35709620上提出的问题，开发了此插件。
+针对https://github.com/nutzam/nutz/issues/603#issuecomment-35709620上提出的问题，开发了此插件、
+<br/>目的是用于开发博客社交类等程序，这些可能会经常要更换模板，路径写死在代码不合适。
 
 使用步骤：
+
  1.引用nutz-plugins-multiview.jar插件
 
  2.配置MainModule的视图为ResourceBundleViewResolver 
@@ -182,7 +184,8 @@ AbstractTemplateViewResolver、AbstractUrlBasedView、MultiViewResover和ViewRes
 
 view.js配置文件中，multiViewResover是约定的名称。
 
-以下是在此插件下对应beetl模板视图的实现，继承于AbstractTemplateViewResolver，实现init和render方法：
+如果想添加别的视图，只需继承于AbstractTemplateViewResolver，实现init和render方法即可。
+<br/>例如以下是在此插件下beetl模板视图的实现：
 
 ```Java
 import java.io.IOException;
@@ -223,25 +226,23 @@ public class BeetlView extends AbstractTemplateViewResolver {
 
 } 
 ```
-如果配置文件中增加如下代码：
 
-```javascript
- // 读取配置文件
-	config : {
-			type : "org.nutz.ioc.impl.PropertiesProxy",
-			fields : { paths : ["SystemGlobals.properties"] } 
-	}
+<br/>init方法只执行一次，一般用于加载视图的配置相关的代码，且某些对象只需实例化一次，后面就不用实例化。
+<br/>render的sharedVars是全局的变量，有这些：
+path，
 
-```
+完整的项目连接路径basePath，
 
-SystemGlobals.properties属性文件中，可配置如下:
+请求连接的后缀servletExtension，
 
-```Java
- # If you change this value, is necessary to edit WEB-INF/web.xml as well
-servlet.extension=
-resource.dir=resources
+模板所在目录tplDir,
 
-```
+资源根路径resPath，
+
+模板对应的资源路径tplResPath，
+
+这几个变量对于做博客论坛等经常更换模板的程序很有用。 
+
 ResourceBundleViewResolver源码片段
 
 ```Java
@@ -265,18 +266,25 @@ vr.render(req, resp, evalPath, sv);
 
 ```
 
-共享的变量有
+如果配置文件中增加如下代码：
 
-path，
+```javascript
+ // 读取配置文件
+	config : {
+			type : "org.nutz.ioc.impl.PropertiesProxy",
+			fields : { paths : ["SystemGlobals.properties"] } 
+	}
 
-完整的项目连接路径basePath，
+```
 
-请求连接的后缀servletExtension，
+SystemGlobals.properties属性文件中，可配置如下:
 
-模板所在目录tplDir,
+```Java
+ # If you change this value, is necessary to edit WEB-INF/web.xml as well
+servlet.extension=
+resource.dir=resources
 
-资源根路径resPath，
+```
 
-模板对应的资源路径tplResPath，
-
-这几个变量对于做博客论坛等可更换模板的程序很有用。 
+servlet.extension 是请求连接的后缀 对应页面变量servletExtension
+resource.dir  资源根路径 对应页面变量resPath
