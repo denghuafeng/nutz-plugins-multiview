@@ -77,10 +77,6 @@ var ioc = {
 4.在module的方法里返回相应的视图，当然要创建相应的视图文件，如下：
 
 ```Java
-import org.nutz.ioc.loader.annotation.IocBean;
-import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Ok;
-
 @At("/beetl")
 @IocBean
 public class BeetlModule {
@@ -96,8 +92,10 @@ public class BeetlModule {
 
 	}
 } 
+```
 
- @At("/ftl")
+```Java
+@At("/ftl")
 @IocBean
 public class FreemarkerModule {
 	@At
@@ -106,8 +104,10 @@ public class FreemarkerModule {
 
 	}
 } 
+```
 
- @At("/jetx")
+```Java
+@At("/jetx")
 @IocBean
 public class JetTemplateModule {
 	@At
@@ -116,8 +116,10 @@ public class JetTemplateModule {
 
 	}
 } 
+```
 
- @At("/jsp")
+```Java
+@At("/jsp")
 @IocBean
 public class JspModule {
 	@At
@@ -127,8 +129,8 @@ public class JspModule {
 	}
 } 
 ```
-访问相应的链接，就会找到相应的视图，
 
+访问相应的链接，就会找到相应的视图，
 
 注意的地方：1.如果beetl.properties里设置了RESOURCE.root=WEB-INF ，则view.js配置的beetl视图的路径则在WEB-INF下面。例如
 
@@ -228,8 +230,9 @@ public class BeetlView extends AbstractTemplateViewResolver {
 ```
 
 <br/>init方法只执行一次，一般用于加载视图的配置相关的代码，且某些对象只需实例化一次，后面就不用实例化。
-<br/>render的sharedVars是全局的变量，有这些：
-path，
+<br/>render方法的sharedVars是全局的变量，有这些：
+<br/>
+path 项目根路径，
 
 完整的项目连接路径basePath，
 
