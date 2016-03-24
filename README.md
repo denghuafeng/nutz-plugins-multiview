@@ -5,19 +5,16 @@
 针对https://github.com/nutzam/nutz/issues/603#issuecomment-35709620上提出的问题，开发了此插件。
 
 使用步骤：
+ 1.引用nutz-plugins-multiview.jar插件
+ 2.配置MainModule的视图为ResourceBundleViewResolver 
 
-    1.引用nutz-plugins-multiview.jar插件
-
-    2.配置MainModule的视图为ResourceBundleViewResolver 
-
-
- @Views({ResourceBundleViewResolver.class})
-
+```Java
+@Views({ResourceBundleViewResolver.class})
 ```
-    3.配置json文件，创建view.js文件，内容如下：
 
+3.配置json文件，创建view.js文件，内容如下：
 
-
+```javascript
 var ioc = {
 	jsp : {
 		type : "org.nutz.plugins.view.JspView",
@@ -71,14 +68,13 @@ var ioc = {
 		}
 	}
 };
-
 ```
 
 创建对应目录
 
     4.在module的方法里返回相应的视图，当然要创建相应的视图文件，如下：
 
-```
+```Java
  import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
@@ -128,14 +124,13 @@ public class JspModule {
 
 	}
 } 
-
 ```
 访问相应的链接，就会找到相应的视图，
 
 
 注意的地方：1.如果beetl.properties里设置了RESOURCE.root=WEB-INF ，则view.js配置的beetl视图的路径则在WEB-INF下面。例如
 
-```
+```Java
  #默认配置
 #ENGINE=org.beetl.core.FastRuntimeEngine
 DELIMITER_PLACEHOLDER_START=${
@@ -156,20 +151,19 @@ MVC_STRICT = FALSE
 RESOURCE.root= WEB-INF
 #是否检测文件变化
 RESOURCE.autoCheck=true
-
 ```
 
 2.jetbrick-template.properties里配置的路径被view.js配置的路径给覆盖。
 
 
-```
+```Java
  template.loader = $loader
 
 $loader = jetbrick.template.loader.ResourceLoader
 $loader.root = /WEB-INF
 $loader.reloadable =false
-
 ```
+
 既这时候的root路径不起作用。
 
 
@@ -190,8 +184,8 @@ view.js配置文件中，multiViewResover是约定的名称。
 
 以下是在此插件下对应beetl模板视图的实现，继承于AbstractTemplateViewResolver，实现init和render方法：
 
-```
- import java.io.IOException;
+```Java
+import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -228,10 +222,10 @@ public class BeetlView extends AbstractTemplateViewResolver {
 	}
 
 } 
-
 ```
 如果配置文件中增加如下代码：
-```
+
+```javascript
  // 读取配置文件
 	config : {
 			type : "org.nutz.ioc.impl.PropertiesProxy",
@@ -242,7 +236,7 @@ public class BeetlView extends AbstractTemplateViewResolver {
 
 SystemGlobals.properties属性文件中，可配置如下:
 
-```
+```Java
  # If you change this value, is necessary to edit WEB-INF/web.xml as well
 servlet.extension=
 resource.dir=resources
@@ -250,7 +244,7 @@ resource.dir=resources
 ```
 ResourceBundleViewResolver源码片段
 
-```
+```Java
  String resDir = config.get(RESOURCE_DIR);
 if (Strings.isBlank(resDir)) {
 	resDir = "";
