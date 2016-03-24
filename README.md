@@ -9,11 +9,15 @@
     1.引用nutz-plugins-multiview.jar插件
 
     2.配置MainModule的视图为ResourceBundleViewResolver 
+
+
 ```
  @Views({ResourceBundleViewResolver.class})
 
 ```
     3.配置json文件，创建view.js文件，内容如下：
+
+    
 ```
 var ioc = {
 	jsp : {
